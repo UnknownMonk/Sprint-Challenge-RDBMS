@@ -52,20 +52,15 @@ server.post('/api/project', async (req, res) => {
   }
 });
 
-server.get('/api/project/:id', (req, res) => {
+server.get('/api/project/:id', async (req, res) => {
   const { id } = req.params;
-  db('project')
-    .where({ id })
-    .then(project => {
-      db('action')
-        .where({ project_id: id })
-        .then(action => {
-          return res.status(200).json({ ...project, actions: action });
-        })
-        .catch(() => {
-          return res.status(500).json({ Error: 'Project data not found' });
-        });
-    });
+  try {
+    const project = await db('project').where({ id });
+    const action = await db('action').where({ project_id: id });
+    res.status(200).json({ ...project, actions: action });
+  } catch (error) {
+    res.status(500).json({ Error: 'Project data not found' });
+  }
 });
 
 const port = process.env.PORT || 5000;
