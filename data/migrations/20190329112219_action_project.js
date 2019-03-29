@@ -17,7 +17,7 @@ exports.up = function(knex) {
         .string('name', 128)
         .notNullable()
         .unique();
-      tbl.text('discription').notNullable();
+      tbl.text('description').notNullable();
     });
 };
 
