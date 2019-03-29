@@ -29,7 +29,7 @@ project.get('/:id', async (req, res) => {
   try {
     const project = await db('project').where({ id });
     const action = await db('action').where({ project_id: id });
-    res.status(200).json({ ...project, action });
+    res.status(200).json({ ...project, actions: action });
   } catch (error) {
     res.status(500).json({ Error: 'Project data not found' });
   }
